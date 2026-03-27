@@ -1,0 +1,179 @@
+{
+  "name": "copilot-history",
+  "displayName": "Copilot History",
+  "description": "Full conversation history, search, tagging, export, and resume for GitHub Copilot Chat",
+  "version": "0.1.0",
+  "publisher": "sanjay",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SanjaypKhandan/copilot-history"
+  },
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Chat"
+  ],
+  "icon": "media/icon.png",
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "chatParticipants": [
+      {
+        "id": "copilot-history.chat",
+        "name": "history",
+        "fullName": "Copilot History",
+        "description": "Chat with Copilot and keep full conversation history",
+        "isSticky": true,
+        "commands": [
+          {
+            "name": "new",
+            "description": "Start a new conversation"
+          },
+          {
+            "name": "resume",
+            "description": "Resume a past conversation by ID or title"
+          },
+          {
+            "name": "search",
+            "description": "Search past conversations"
+          }
+        ]
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "copilot-history",
+          "title": "Copilot History",
+          "icon": "media/history.svg"
+        }
+      ]
+    },
+    "views": {
+      "copilot-history": [
+        {
+          "id": "copilotHistory.conversationList",
+          "name": "Conversations",
+          "type": "tree"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "copilotHistory.starConversation",
+        "title": "Star Conversation",
+        "icon": "$(star-empty)"
+      },
+      {
+        "command": "copilotHistory.unstarConversation",
+        "title": "Unstar Conversation",
+        "icon": "$(star-full)"
+      },
+      {
+        "command": "copilotHistory.tagConversation",
+        "title": "Tag Conversation",
+        "icon": "$(tag)"
+      },
+      {
+        "command": "copilotHistory.deleteConversation",
+        "title": "Delete Conversation",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "copilotHistory.exportMarkdown",
+        "title": "Export as Markdown"
+      },
+      {
+        "command": "copilotHistory.exportJson",
+        "title": "Export as JSON"
+      },
+      {
+        "command": "copilotHistory.openConversation",
+        "title": "Open Conversation"
+      },
+      {
+        "command": "copilotHistory.resumeConversation",
+        "title": "Resume Conversation"
+      },
+      {
+        "command": "copilotHistory.searchConversations",
+        "title": "Search Conversations",
+        "icon": "$(search)"
+      },
+      {
+        "command": "copilotHistory.refresh",
+        "title": "Refresh",
+        "icon": "$(refresh)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "copilotHistory.searchConversations",
+          "when": "view == copilotHistory.conversationList",
+          "group": "navigation"
+        },
+        {
+          "command": "copilotHistory.refresh",
+          "when": "view == copilotHistory.conversationList",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "copilotHistory.starConversation",
+          "when": "view == copilotHistory.conversationList && viewItem == conversation",
+          "group": "inline"
+        },
+        {
+          "command": "copilotHistory.tagConversation",
+          "when": "view == copilotHistory.conversationList && viewItem == conversation"
+        },
+        {
+          "command": "copilotHistory.exportMarkdown",
+          "when": "view == copilotHistory.conversationList && viewItem == conversation"
+        },
+        {
+          "command": "copilotHistory.exportJson",
+          "when": "view == copilotHistory.conversationList && viewItem == conversation"
+        },
+        {
+          "command": "copilotHistory.resumeConversation",
+          "when": "view == copilotHistory.conversationList && viewItem == conversation"
+        },
+        {
+          "command": "copilotHistory.deleteConversation",
+          "when": "view == copilotHistory.conversationList && viewItem == conversation"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Copilot History",
+      "properties": {
+        "copilotHistory.maxConversations": {
+          "type": "number",
+          "default": 500,
+          "description": "Maximum number of conversations to retain"
+        },
+        "copilotHistory.autoTitle": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically generate conversation titles using the LLM"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src --ext ts"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.90.0",
+    "typescript": "^5.3.0"
+  }
+}
